@@ -1,0 +1,3 @@
+[submodule "depends/LibCE"]
+	path = depends/LibCE
+	url = https://github.com/hrbm-smy/LibCE.git
