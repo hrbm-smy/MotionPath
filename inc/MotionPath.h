@@ -4,7 +4,7 @@
 /** -------------------------------------------------------------------------
  *
  *	@file	MotionPath.h
- *	@brief	Path of the motion
+ *	@brief	Time-constrained S-curve motion path
  *	@author	H.Someya
  *	@date	2024/04/24
  *
