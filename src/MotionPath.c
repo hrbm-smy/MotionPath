@@ -33,13 +33,21 @@ SOFTWARE.
 
 #include <string.h>
 #include <math.h>
+#include <float.h>
 #include "nullptr.h"
 #include "ArrayCap.h"
 
 /* --------------------------------------------------------------------------
  *  P R I V A T E S
  */
+
 #define MOTIONPATH_INLINE inline
+
+/**
+ * 浮動小数点値が0であるか判定する。
+ * @param fpv 浮動小数点値
+ */
+#define DBL_ISZERO(fpv) (fabs((fpv)) < DBL_EPSILON)
 
 /* --------------------------------------------------------------------------
  *  P U B L I C   I N T E R F A C E S
@@ -110,7 +118,7 @@ double MotionPath_Accel(
 {
 	double a = a0;
 
-	if (j != 0)
+	if (!DBL_ISZERO(j))
 	{
 		a = MotionPath_JerkedAccel(dt, j, a0);
 	}
@@ -183,7 +191,7 @@ double MotionPath_Velocity(
 {
 	double v = v0;
 
-	if (j != 0)
+	if (!DBL_ISZERO(j))
 	{
 		v = MotionPath_JerkedVelocity(dt, j, a0, v0);
 	}
@@ -280,7 +288,7 @@ double MotionPath_Location(
 {
 	double x = x0;
 
-	if (j != 0)
+	if (!DBL_ISZERO(j))
 	{
 		x = MotionPath_JerkedLocation(dt, j, a0, v0, x0, xsign);
 	}
@@ -380,7 +388,7 @@ double MotionPath_States(
 {
 	double result = 0;
 
-	if (j != 0)
+	if (!DBL_ISZERO(j))
 	{
 		result = MotionPath_JerkedStates(dt, j, a0, v0, x0, xsign, results);
 	}
@@ -444,7 +452,7 @@ double QuadraticRoots(double a, double b, double c)
 	double x = NAN;
 
 	double D = (b * b) - (4 * a * c);
-	if (a == 0)
+	if (DBL_ISZERO(a))
 	{
 		x = -(c / b);
 	}
@@ -519,25 +527,25 @@ double MotionPath_CreateWithTime(
 		 * vcに関わらず計算できるものを計算する
 		 */
 		double dtss = 0;
-		if (jss != 0)
+		if (!DBL_ISZERO(jss))
 		{
 			dtss = (asm_ - ass) / jss;
 		}
 
 		double dtse = 0;
-		if (jse != 0)
+		if (!DBL_ISZERO(jse))
 		{
 			dtse = (ac - asm_) / jse;
 		}
 
 		double dtes = 0;
-		if (jes != 0)
+		if (!DBL_ISZERO(jes))
 		{
 			dtes = (aem - ac) / jes;
 		}
 
 		double dtee = 0;
-		if (jee != 0)
+		if (!DBL_ISZERO(jee))
 		{
 			dtee = (aee - aem) / jee;
 		}
@@ -726,7 +734,7 @@ double MotionPath_CreateWithVelocity(
 			 */
 			// 計算
 			double dts = 0;
-			if (js != 0)
+			if (!DBL_ISZERO(js))
 			{
 				dts = (am - as) / js;
 			}
@@ -736,7 +744,7 @@ double MotionPath_CreateWithVelocity(
 			 */
 			// 計算
 			double dte = 0;
-			if (je != 0)
+			if (!DBL_ISZERO(je))
 			{
 				dte = (ae - am) / je;
 			}
@@ -747,7 +755,7 @@ double MotionPath_CreateWithVelocity(
 			double vms = (((as + am) / 2.0) * dts) + vs;
 			double vme = ve - (((am + ae) / 2.0) * dte);
 			double dtm = 0;
-			if (am != 0)
+			if (!DBL_ISZERO(am))
 			{
 				dtm = (vme - vms) / am;
 			}
@@ -809,7 +817,7 @@ double MotionPath_CreateWithVelocity(
 			 */
 			// 計算
 			double dts = 0;
-			if (js != 0)
+			if (!DBL_ISZERO(js))
 			{
 				dts = (am - as) / js;
 			}
@@ -819,7 +827,7 @@ double MotionPath_CreateWithVelocity(
 			 */
 			// 計算
 			double dte = 0;
-			if (je != 0)
+			if (!DBL_ISZERO(je))
 			{
 				dte = (ae - am) / je;
 			}
@@ -830,7 +838,7 @@ double MotionPath_CreateWithVelocity(
 			double vms = (((as + am) / 2.0) * dts) + vs;
 			double vme = ve - (((am + ae) / 2.0) * dte);
 			double dtm = 0;
-			if (am != 0)
+			if (!DBL_ISZERO(am) != 0)
 			{
 				dtm = (vme - vms) / am;
 			}
